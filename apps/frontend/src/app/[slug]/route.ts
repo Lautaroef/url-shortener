@@ -8,9 +8,7 @@ export async function GET(
   
   try {
     // Call the backend API to get the redirect
-    const backendUrl = process.env.NODE_ENV === 'production' 
-      ? 'https://url-shortener-eosin-eight.vercel.app/api'
-      : 'http://localhost:3001/api';
+    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
     
     const response = await fetch(`${backendUrl}/${slug}`, {
       redirect: 'manual',
