@@ -9,6 +9,7 @@ import {
 } from "@nestjs/common";
 import { AnalyticsService } from "./analytics.service";
 import { AuthGuard } from "../auth/guards/auth.guard";
+import { OptionalAuthGuard } from "../auth/guards/optional-auth.guard";
 import { TasksService } from "./tasks.service";
 
 @Controller("analytics")
@@ -19,7 +20,7 @@ export class AnalyticsController {
   ) {}
 
   @Get("url/:id")
-  @UseGuards(AuthGuard)
+  @UseGuards(OptionalAuthGuard)
   async getUrlAnalytics(
     @Param("id", ParseIntPipe) id: number,
     @Request() req: any,
