@@ -17,17 +17,15 @@ This guide covers all the manual steps required to set up external services and 
    - ✅ Custom events (for tracking redirects)
    - Optional: Outbound links, File downloads
 
-### Installation Script
-The script tag for Plausible is:
-```html
-<script defer data-domain="url-shortener-eosin-eight.vercel.app" src="https://plausible.io/js/script.js"></script>
-```
+### Installation Script ✅
+- Script successfully installed in Next.js layout
+- Plausible confirmed: "Your installation is working and visitors are being counted accurately"
+- Domain: `url-shortener-eosin-eight.vercel.app`
 
-### Get API Keys 🔄 TODO
-1. Go to your [Account Settings](https://plausible.io/settings/api-keys)
-2. Click "Create new API key"
-3. Give it a name like "URL Shortener Backend"
-4. Copy the API key - update it in `/apps/backend/.env`
+### Get API Keys ℹ️ (Optional - Requires Paid Plan)
+1. API keys require a paid Plausible plan
+2. For free plan, we'll use JavaScript tracking on frontend
+3. Events will be tracked when users visit shortened URLs
 
 ### Configure Goals 🔄 TODO
 1. Go to your site settings in Plausible
@@ -54,30 +52,36 @@ The script tag for Plausible is:
    - **Service Role**: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjenNkZHp3aWNxb2tzcHdrdHhqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MTk4MTc2MiwiZXhwIjoyMDY3NTU3NzYyfQ.l_CldaBAiEOod3dCzf0E-2-NVcDwGPL3tXj-n4sBuWk`
    - **JWT Secret**: `SOLB7C4+L4IC6ZvP4qbiAJ0DQ5+Rq7b4uNuUTVT9338brWvMvgTNAjsefnIXMckeO6A0kTJfOLGS355iE36t6A==`
 
-### Enable Row Level Security (RLS) 🔄 PENDING
-⚠️ **Note**: Cannot run RLS policies yet - tables don't exist. Run after database migration.
+### Enable Row Level Security (RLS) ✅
+✅ **Status**: RLS enabled and policies created successfully.
 
-1. Go to the SQL Editor in Supabase
-2. Run the following to enable RLS on the urls table (after running migrations):
+1. RLS enabled on `urls` table
+2. Policies created:
+   - Users can view/insert/update/delete their own URLs
+   - Anonymous users can view any URL (for redirects)
 ```sql
 -- Enable RLS
 ALTER TABLE urls ENABLE ROW LEVEL SECURITY;
 
 -- Policy: Users can view only their own URLs
 CREATE POLICY "Users can view own URLs" ON urls
-  FOR SELECT USING (auth.uid()::text = user_id);
+  FOR SELECT USING (auth.uid() = user_id::uuid);
 
 -- Policy: Users can insert their own URLs
 CREATE POLICY "Users can insert own URLs" ON urls
-  FOR INSERT WITH CHECK (auth.uid()::text = user_id);
+  FOR INSERT WITH CHECK (auth.uid() = user_id::uuid);
 
 -- Policy: Users can update their own URLs
 CREATE POLICY "Users can update own URLs" ON urls
-  FOR UPDATE USING (auth.uid()::text = user_id);
+  FOR UPDATE USING (auth.uid() = user_id::uuid);
 
 -- Policy: Users can delete their own URLs
 CREATE POLICY "Users can delete own URLs" ON urls
-  FOR DELETE USING (auth.uid()::text = user_id);
+  FOR DELETE USING (auth.uid() = user_id::uuid);
+
+-- Policy: Allow anonymous users to view any URL (for redirects)
+CREATE POLICY "Anyone can view URLs for redirects" ON urls
+  FOR SELECT USING (true);
 ```
 
 ## 3. Upstash Redis Setup ✅
@@ -196,7 +200,7 @@ pnpm install
 - Set up basic Next.js app with Plausible script
 - Ready for Plausible to detect the script
 
-### 4. Database Setup with Supabase 🔄 TODO
+### 4. Database Setup with Supabase ✅
 ```bash
 # First, create the Prisma schema file
 # Navigate to backend
@@ -215,10 +219,10 @@ npx prisma db push
 npx prisma migrate deploy
 ```
 
-### 5. Create Supabase Auth Trigger 🔄 TODO
-⚠️ **Note**: Run this AFTER creating the users table via Prisma migration.
+### 5. Create Supabase Auth Trigger ✅
+✅ **Status**: Auth trigger created successfully.
 
-In Supabase SQL Editor, create a trigger to sync auth users with your users table:
+The trigger automatically syncs new auth users to the public.users table.
 
 ```sql
 -- Create function to handle new user
@@ -358,22 +362,24 @@ Once all manual setup is complete:
 
 #### ✅ Completed:
 - [x] GitHub repository created and initialized
-- [x] Plausible account created with domain configured
+- [x] Plausible account created and script detected
 - [x] Supabase project created with credentials
-- [x] Upstash Redis database created
+- [x] Upstash Redis database created (2 instances)
 - [x] Vercel project imported and configured
-- [x] Local environment files created with credentials
+- [x] Environment variables synced with Vercel
 - [x] Monorepo structure set up
+- [x] Dependencies installed
+- [x] Prisma schema created and pushed to Supabase
+- [x] Basic Next.js app deployed to Vercel
 
 #### 🔄 TODO:
-- [ ] Get Plausible API key (after script detection)
-- [ ] Run `vercel env pull .env.development.local`
-- [ ] Install project dependencies (`pnpm install`)
-- [ ] Set up Prisma schema
-- [ ] Run database migrations
-- [ ] Enable RLS policies on Supabase
-- [ ] Create auth trigger in Supabase
-- [ ] Deploy to Vercel for Plausible detection
+- [ ] Enable RLS policies on Supabase (manual)
+- [ ] Create auth trigger in Supabase (manual)
+- [ ] Build the actual URL shortener functionality
+- [ ] Implement authentication with Supabase Auth
+- [ ] Create URL shortening UI
+- [ ] Implement redirect logic
+- [ ] Add analytics tracking
 - [ ] Test all integrations
 
 #### 📝 Important Notes:
