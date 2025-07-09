@@ -1,6 +1,6 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
 @Injectable()
 export class AuthService {
@@ -10,24 +10,24 @@ export class AuthService {
     // For now, we'll use the anon key for authentication
     // In production, you'd want to use the service role key
     this.supabase = createClient(
-      this.configService.get('SUPABASE_URL'),
-      this.configService.get('SUPABASE_ANON_KEY') || '', // We'll need to add this to backend .env
+      this.configService.get("SUPABASE_URL"),
+      this.configService.get("SUPABASE_ANON_KEY") || "", // We'll need to add this to backend .env
     );
   }
 
-  async signUp(email: string, password: string) {
+  async signUp() {
     // For backend, we'll just validate the request
     // The actual signup should happen on the frontend
     return {
-      message: 'Please use the frontend to sign up',
+      message: "Please use the frontend to sign up",
     };
   }
 
-  async signIn(email: string, password: string) {
+  async signIn() {
     // For backend, we'll just validate the request
     // The actual signin should happen on the frontend
     return {
-      message: 'Please use the frontend to sign in',
+      message: "Please use the frontend to sign in",
     };
   }
 
@@ -35,7 +35,7 @@ export class AuthService {
     const { data, error } = await this.supabase.auth.getUser(token);
 
     if (error || !data.user) {
-      throw new UnauthorizedException('Invalid token');
+      throw new UnauthorizedException("Invalid token");
     }
 
     return {

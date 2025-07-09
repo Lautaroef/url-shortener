@@ -1,14 +1,13 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { PassportStrategy } from '@nestjs/passport';
-import { ExtractJwt, Strategy } from 'passport-jwt';
-import { passportJwtSecret } from 'jwks-rsa';
-import { ConfigService } from '@nestjs/config';
+import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { PassportStrategy } from "@nestjs/passport";
+import { ExtractJwt, Strategy } from "passport-jwt";
+import { passportJwtSecret } from "jwks-rsa";
+import { ConfigService } from "@nestjs/config";
 
 @Injectable()
-export class SupabaseStrategy extends PassportStrategy(Strategy, 'supabase') {
+export class SupabaseStrategy extends PassportStrategy(Strategy, "supabase") {
   constructor(private configService: ConfigService) {
-    const supabaseUrl = configService.get<string>('SUPABASE_URL');
-    const supabaseAnonKey = configService.get<string>('SUPABASE_ANON_KEY');
+    const supabaseUrl = configService.get<string>("SUPABASE_URL");
 
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -19,15 +18,15 @@ export class SupabaseStrategy extends PassportStrategy(Strategy, 'supabase') {
         jwksRequestsPerMinute: 5,
         jwksUri: `${supabaseUrl}/auth/v1/.well-known/jwks.json`,
       }),
-      audience: 'authenticated',
+      audience: "authenticated",
       issuer: `${supabaseUrl}/auth/v1`,
-      algorithms: ['RS256'],
+      algorithms: ["RS256"],
     });
   }
 
   async validate(payload: any) {
     if (!payload.sub) {
-      throw new UnauthorizedException('Invalid token');
+      throw new UnauthorizedException("Invalid token");
     }
 
     return {

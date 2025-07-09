@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { Redis } from '@upstash/redis';
+import { Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { Redis } from "@upstash/redis";
 
 @Injectable()
 export class CacheService {
@@ -8,8 +8,8 @@ export class CacheService {
 
   constructor(private configService: ConfigService) {
     this.redis = new Redis({
-      url: this.configService.get<string>('KV_REST_API_URL'),
-      token: this.configService.get<string>('KV_REST_API_TOKEN'),
+      url: this.configService.get<string>("KV_REST_API_URL"),
+      token: this.configService.get<string>("KV_REST_API_TOKEN"),
     });
   }
 

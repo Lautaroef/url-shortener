@@ -1,23 +1,6 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "apps/backend/dist/main.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "apps/frontend/package.json",
-      "use": "@vercel/next"
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/apps/backend/dist/main.js"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/apps/frontend/$1"
-    }
-  ]
+  "buildCommand": "cd apps/frontend && pnpm run build",
+  "outputDirectory": "apps/frontend/.next",
+  "framework": "nextjs",
+  "installCommand": "pnpm install --frozen-lockfile && cd apps/frontend && pnpm install"
 }
