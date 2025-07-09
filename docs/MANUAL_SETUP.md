@@ -96,13 +96,13 @@ CREATE POLICY "Users can delete own URLs" ON urls
    - **Read-Only Token**: `AipkAAIgcDFOfaQtu3-Edf3QrHRLomm6fdowqa8JIE1MQLRZFqI6ZQ`
    - **Redis CLI**: `redis-cli --tls -u redis://default:ASpkAAIjcDE1Y2NiMTMyMzU0NWQ0MmE0OTVmMmJhZDgyN2UyYWMyMHAxMA@close-gecko-10852.upstash.io:6379`
 
-### Vercel Integration 🔄 PENDING
-1. In your Vercel project, go to Settings > Integrations
-2. Add Upstash Redis integration
-3. When prompted:
-   - Primary Region: Washington, D.C., USA (East)
-   - Eviction: Enable
-4. This will automatically set environment variables
+### Vercel Integration ✅
+1. Created new Upstash database via Vercel integration
+2. Database name: "upstash-kv-fuchsia-village"
+3. New connection details:
+   - **Endpoint**: `https://accurate-possum-56769.upstash.io`
+   - **REST Token**: `Ad3BAAIjcDFmYzg0ZWRkOTMxNTY0YzE2YTgwNTE2NzM0MjUwZGU4M3AxMA`
+   - Environment variables automatically added to Vercel with KV_ prefix
 
 ## 4. Vercel Setup ✅
 
@@ -117,8 +117,8 @@ CREATE POLICY "Users can delete own URLs" ON urls
    - Install Command: `pnpm install`
 5. Domain: `url-shortener-eosin-eight.vercel.app`
 
-### Environment Variables 🔄 TODO
-In Vercel dashboard > Settings > Environment Variables, add:
+### Environment Variables ✅
+Added to Vercel dashboard > Settings > Environment Variables:
 
 ```bash
 # Supabase
@@ -127,9 +127,10 @@ DIRECT_URL="postgresql://postgres.zczsddzwicqokspwktxj:.a7Yu7ApHDnACWZ@aws-0-us-
 SUPABASE_URL="https://zczsddzwicqokspwktxj.supabase.co"
 SUPABASE_JWT_SECRET="SOLB7C4+L4IC6ZvP4qbiAJ0DQ5+Rq7b4uNuUTVT9338brWvMvgTNAjsefnIXMckeO6A0kTJfOLGS355iE36t6A=="
 
-# Upstash Redis (if not using integration)
-UPSTASH_REDIS_REST_URL="https://close-gecko-10852.upstash.io"
-UPSTASH_REDIS_REST_TOKEN="ASpkAAIjcDE1Y2NiMTMyMzU0NWQ0MmE0OTVmMmJhZDgyN2UyYWMyMHAxMA"
+# Upstash Redis (Vercel KV Integration)
+KV_REST_API_URL="https://accurate-possum-56769.upstash.io"
+KV_REST_API_TOKEN="Ad3BAAIjcDFmYzg0ZWRkOTMxNTY0YzE2YTgwNTE2NzM0MjUwZGU4M3AxMA"
+KV_REST_API_READ_ONLY_TOKEN="At3BAAIgcDF3n5q1VMgOiFQSE7Z3ubKsjtMkGmI260L3tyuuBOJ8vg"
 
 # Plausible
 PLAUSIBLE_DOMAIN="url-shortener-eosin-eight.vercel.app"
@@ -189,6 +190,11 @@ npm install -g pnpm
 # Install dependencies
 pnpm install
 ```
+
+### 4. Basic App Structure ✅
+- Created frontend and backend package.json files
+- Set up basic Next.js app with Plausible script
+- Ready for Plausible to detect the script
 
 ### 4. Database Setup with Supabase 🔄 TODO
 ```bash
@@ -360,19 +366,19 @@ Once all manual setup is complete:
 - [x] Monorepo structure set up
 
 #### 🔄 TODO:
-- [ ] Get Plausible API key and update .env files
-- [ ] Set up Vercel environment variables
-- [ ] Complete Upstash-Vercel integration
+- [ ] Get Plausible API key (after script detection)
+- [ ] Run `vercel env pull .env.development.local`
 - [ ] Install project dependencies (`pnpm install`)
-- [ ] Create backend and frontend projects
 - [ ] Set up Prisma schema
 - [ ] Run database migrations
 - [ ] Enable RLS policies on Supabase
 - [ ] Create auth trigger in Supabase
+- [ ] Deploy to Vercel for Plausible detection
 - [ ] Test all integrations
 
 #### 📝 Important Notes:
-1. **ngrok vs Vercel domain**: Using Vercel domain (`url-shortener-eosin-eight.vercel.app`) for Plausible instead of ngrok
-2. **Plausible Custom Events**: Enabled for tracking redirects
-3. **Database Password**: Stored securely in .env files
-4. **First Commit**: Ready to make initial commit once dependencies are installed
+1. **Vercel domain**: Using `url-shortener-eosin-eight.vercel.app` for Plausible
+2. **Plausible Script**: Added to Next.js layout, waiting for detection
+3. **Upstash Integration**: Now using Vercel KV with new credentials
+4. **First Commit**: ✅ Pushed to GitHub
+5. **Next Step**: Deploy to Vercel so Plausible can detect the script
