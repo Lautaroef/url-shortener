@@ -1,6 +1,7 @@
 {
   "version": 2,
-  "buildCommand": "pnpm run build",
+  "buildCommand": "pnpm run build && cp -r dist api/dist && cp -r prisma api/prisma",
+  "outputDirectory": "api",
   "rewrites": [
     {
       "source": "/(.*)",
