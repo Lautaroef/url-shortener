@@ -48,10 +48,28 @@ export class UrlService {
   async findAll(userId?: string): Promise<Url[]> {
     const where = userId ? { userId } : {};
     
-    return this.prisma.url.findMany({
+    const urls = await this.prisma.url.findMany({
       where,
       orderBy: { createdAt: 'desc' },
+      include: {
+        _count: {
+          select: { visits: true },
+        },
+      },
     });
+
+    // Add real-time visit counts from cache
+    const urlsWithVisits = await Promise.all(
+      urls.map(async (url) => {
+        const realtimeVisits = await this.cache.get<number>(`visits:${url.shortCode}`) || 0;
+        return {
+          ...url,
+          visits: url._count.visits + realtimeVisits,
+        };
+      })
+    );
+
+    return urlsWithVisits;
   }
 
   async findOne(id: number, userId?: string): Promise<Url> {

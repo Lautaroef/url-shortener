@@ -30,8 +30,25 @@ model Url {
   updatedAt   DateTime @updatedAt @map("updated_at")
   
   user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  visits      Visit[]
   
   @@index([shortCode])
   @@index([userId])
   @@map("urls")
+}
+
+model Visit {
+  id          Int      @id @default(autoincrement())
+  urlId       Int      @map("url_id")
+  visitedAt   DateTime @default(now()) @map("visited_at")
+  ipHash      String?  @map("ip_hash") @db.VarChar(64) // Hashed IP for privacy
+  userAgent   String?  @map("user_agent")
+  referer     String?
+  country     String?  @db.VarChar(2)
+  
+  url         Url      @relation(fields: [urlId], references: [id], onDelete: Cascade)
+  
+  @@index([urlId])
+  @@index([visitedAt])
+  @@map("visits")
 }

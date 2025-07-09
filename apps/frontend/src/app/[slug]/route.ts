@@ -8,7 +8,11 @@ export async function GET(
   
   try {
     // Call the backend API to get the redirect
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api'}/${slug}`, {
+    const backendUrl = process.env.NODE_ENV === 'production' 
+      ? 'https://url-shortener-eosin-eight.vercel.app/api'
+      : 'http://localhost:3001/api';
+    
+    const response = await fetch(`${backendUrl}/${slug}`, {
       redirect: 'manual',
     });
     
@@ -19,11 +23,8 @@ export async function GET(
       }
     }
     
-    // If not found, return 404
-    return NextResponse.json(
-      { error: 'Short URL not found' },
-      { status: 404 }
-    );
+    // If not found, trigger Next.js 404 page
+    return new NextResponse(null, { status: 404 });
   } catch (error) {
     console.error('Redirect error:', error);
     return NextResponse.json(

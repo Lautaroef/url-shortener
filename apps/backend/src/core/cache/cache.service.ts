@@ -41,4 +41,48 @@ export class CacheService {
       console.error(`Cache delete error for key ${key}:`, error);
     }
   }
+
+  async increment(key: string): Promise<number> {
+    try {
+      return await this.redis.incr(key);
+    } catch (error) {
+      console.error(`Cache increment error for key ${key}:`, error);
+      throw error;
+    }
+  }
+
+  async lpush(key: string, value: string): Promise<number> {
+    try {
+      return await this.redis.lpush(key, value);
+    } catch (error) {
+      console.error(`Cache lpush error for key ${key}:`, error);
+      throw error;
+    }
+  }
+
+  async lrange(key: string, start: number, stop: number): Promise<string[]> {
+    try {
+      return await this.redis.lrange(key, start, stop);
+    } catch (error) {
+      console.error(`Cache lrange error for key ${key}:`, error);
+      return [];
+    }
+  }
+
+  async ltrim(key: string, start: number, stop: number): Promise<void> {
+    try {
+      await this.redis.ltrim(key, start, stop);
+    } catch (error) {
+      console.error(`Cache ltrim error for key ${key}:`, error);
+    }
+  }
+
+  async keys(pattern: string): Promise<string[]> {
+    try {
+      return await this.redis.keys(pattern);
+    } catch (error) {
+      console.error(`Cache keys error for pattern ${pattern}:`, error);
+      return [];
+    }
+  }
 }
