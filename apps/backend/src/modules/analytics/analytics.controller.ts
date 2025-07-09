@@ -30,9 +30,9 @@ export class AnalyticsController {
   }
 
   @Get("user")
-  @UseGuards(AuthGuard)
+  @UseGuards(OptionalAuthGuard)
   async getUserAnalytics(@Request() req: any) {
-    const userId = req.user.userId;
+    const userId = req.user?.userId;
     return this.analyticsService.getUserAnalytics(userId);
   }
 

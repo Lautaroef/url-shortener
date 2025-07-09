@@ -61,10 +61,20 @@ export function UserMenu() {
 
   return (
     <>
-      <Button variant="outline" size="sm" onClick={() => setShowAuthModal(true)}>
-        <User className="h-4 w-4 mr-2" />
-        Sign In
-      </Button>
+      <div className="flex items-center gap-4">
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={() => window.location.href = '/dashboard'}
+        >
+          <BarChart3 className="h-4 w-4 mr-2" />
+          Dashboard
+        </Button>
+        <Button variant="outline" size="sm" onClick={() => setShowAuthModal(true)}>
+          <User className="h-4 w-4 mr-2" />
+          Sign In
+        </Button>
+      </div>
       <AuthModal open={showAuthModal} onOpenChange={setShowAuthModal} />
     </>
   );

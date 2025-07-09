@@ -17,11 +17,13 @@ import {
   BarChart,
   Bar,
 } from 'recharts';
-import { ArrowLeft, Globe, Link2, Clock, RefreshCw } from 'lucide-react';
+import { ArrowLeft, Globe, Link2, Clock, RefreshCw, Info } from 'lucide-react';
+import { useAuth } from '@/lib/hooks/use-auth';
 
 export default function AnalyticsPage() {
   const params = useParams();
   const router = useRouter();
+  const { user } = useAuth();
   const [analytics, setAnalytics] = useState<UrlAnalytics | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -139,6 +141,39 @@ export default function AnalyticsPage() {
             </div>
           </div>
         </div>
+
+        {/* Anonymous User Notification */}
+        {!user && (
+          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
+            <div className="flex items-start gap-3">
+              <Info className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+              <div>
+                <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-1">
+                  Viewing Public Analytics
+                </h3>
+                <p className="text-sm text-blue-800 dark:text-blue-200 mb-3">
+                  You're viewing public analytics for this URL. To create your own URLs and track personal analytics, please sign in or create an account.
+                </p>
+                <div className="flex gap-2">
+                  <Button 
+                    size="sm" 
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                    onClick={() => router.push('/')}
+                  >
+                    Sign In / Sign Up
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => router.push('/')}
+                  >
+                    Create New URL
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
