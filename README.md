@@ -2,7 +2,7 @@
 
 A modern URL shortener built with Next.js, NestJS, and Supabase. Transform long URLs into short, memorable links with real-time analytics.
 
-![URL Shortener Homepage](./docs/images/homepage-screenshot.png)
+![URL Shortener Homepage](./screenshots/home.png)
 
 ## 🚀 Live Demo
 
@@ -19,7 +19,7 @@ A modern URL shortener built with Next.js, NestJS, and Supabase. Transform long 
 - **Lightning Fast** - Sub-100ms redirects with Redis caching
 - **Beautiful UI** - Modern, responsive design with dark mode
 
-![Analytics Dashboard](./docs/images/dashboard-screenshot.png)
+![Analytics Dashboard](./screenshots/dashboard.png)
 
 ## 🛠️ Built With
 
