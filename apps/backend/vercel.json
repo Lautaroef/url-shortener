@@ -1,10 +1,17 @@
 {
   "version": 2,
-  "buildCommand": "pnpm run build",
+  "buildCommand": "pnpm run build && mkdir -p public && echo '{}' > public/index.html",
+  "outputDirectory": "public",
   "functions": {
     "api/index.js": {
       "maxDuration": 30,
       "includeFiles": "{dist,prisma,../../node_modules/.prisma,../../node_modules/@prisma/client}/**"
     }
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/api"
+    }
+  ]
 }
