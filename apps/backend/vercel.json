@@ -1,18 +1,10 @@
 {
   "version": 2,
-  "name": "url-shortener-backend",
-  "buildCommand": "cd ../.. && pnpm install && cd apps/backend && pnpm run build",
-  "outputDirectory": "dist",
-  "framework": null,
-  "functions": {
-    "dist/main.js": {
-      "maxDuration": 30
-    }
-  },
-  "routes": [
+  "buildCommand": "pnpm run build",
+  "rewrites": [
     {
-      "src": "/(.*)",
-      "dest": "dist/main.js"
+      "source": "/(.*)",
+      "destination": "/api"
     }
   ]
 }
